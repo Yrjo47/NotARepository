@@ -9,7 +9,6 @@ import { encoded, translations } from "./data.js";
 const decode = (encoded, translations) => {
     const decoded = [];
     const excluded = ["groupId", "service", "formatSize", "ca"];
-    const uniqueIds = [];
     for (let i = 0; i < encoded.length; i += 1) {
         decoded[i] = {};
         for (let field in encoded[i]) {
@@ -77,6 +76,6 @@ const untranslatableIds = findAllFieldsWithUntranslatableIds(
 
 // console.log("Let's rock");
 // console.log(translations);
-// console.log(decoded);
+console.log(decoded);
 console.log(uniqueIds);
 // console.log(untranslatableIds);
