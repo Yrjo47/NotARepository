@@ -1,8 +1,9 @@
 <script lang="ts">
-    import { onMount } from "svelte";
-
-    let promise = fetchCurrenciesWithRatesToUSD();
-    let currencies;
+    interface CurrencyRates {
+        [key: string]: number;
+    }
+    let promise: Promise<void> = fetchCurrenciesWithRatesToUSD();
+    let currencies: CurrencyRates;
 
     async function fetchCurrenciesWithRatesToUSD() {
         const response = await fetch("https://open.er-api.com/v6/latest/USD");
@@ -37,7 +38,7 @@
     {:then}
         <div id="content-wrapper">
             <h1>Конвертер валют</h1>
-            <div id="description-section">
+            <div id="description-block">
                 <p>
                     Данный сервис позволяет конвертировать валюты. Для
                     проведения расчета необходимо ввести сумму конвертации в
@@ -50,8 +51,8 @@
                     внимательны!
                 </p>
             </div>
-            <div id="converter-section">
-                <div class="input-block">
+            <div id="converter-block">
+                <div class="converter-input-block">
                     <input
                         type="number"
                         step="0.01"
@@ -60,7 +61,7 @@
                         on:input={evaluateSecond}
                     />
                     <select
-                        name="currnecy1"
+                        name="currency1"
                         id="currency1-select"
                         bind:value={currencyOne}
                         on:change={changeRatio}
@@ -71,7 +72,7 @@
                         {/each}
                     </select>
                 </div>
-                <div class="middle-block">
+                <div class="converter-middle-block">
                     <span class="coefficient"
                         >x{Math.round(ratio * 1000) / 1000}</span
                     >
@@ -105,7 +106,7 @@
                         >x{Math.round((1 / ratio) * 1000) / 1000}</span
                     >
                 </div>
-                <div class="input-block">
+                <div class="converter-input-block">
                     <input
                         type="number"
                         step="0.01"
@@ -114,7 +115,7 @@
                         on:input={evaluateFirst}
                     />
                     <select
-                        name="currnecy2"
+                        name="currency2"
                         id="currency2-select"
                         bind:value={currencyTwo}
                         on:change={changeRatio}
@@ -154,13 +155,13 @@
         width: 80%;
     }
 
-    #description-section {
+    #description-block {
         width: 80%;
         max-width: 960px;
         margin-bottom: 72px;
     }
 
-    #converter-section {
+    #converter-block {
         width: 320px;
         display: flex;
         flex-direction: column;
@@ -193,15 +194,16 @@
         height: 56px;
         padding: 0 8px;
         border: none;
+        cursor: pointer;
     }
 
-    .input-block {
+    .converter-input-block {
         display: flex;
         width: 100%;
         gap: 8px;
     }
 
-    .middle-block {
+    .converter-middle-block {
         width: 100%;
         display: flex;
         align-items: center;
